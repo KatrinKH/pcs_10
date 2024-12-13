@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pcs_10/auth/auth_services.dart';
+import 'package:pcs_10/auth/auth_service.dart';
+import 'package:pcs_10/presentation/screens/profile_page.dart';  
+import 'package:pcs_10/presentation/screens/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -9,55 +11,61 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // get auth services
   final authServices = AuthServices();
-
-  // text controllers
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  // login button pressed
   void login() async {
-    // prepare data 
     final email = _emailController.text;
     final password = _passwordController.text;
 
-    // attempt login..
     try {
       await authServices.signInWithEmailPassword(email, password);
-    }
-
-    // catch any errors..
-    catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Ошибка: $e")));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const ProfilePage()),
+        );
       }
-    } 
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Ошибка: $e")));
+      }
+    }
   }
 
-  // BUILD UI
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text("Вход")),
       body: ListView(
+        padding: const EdgeInsets.all(16),
         children: [
-          // email
           TextField(
-            controller: _emailController,
+            controller: _emailController, 
+            decoration: const InputDecoration(labelText: "Почта"),
+          ),
+          TextField(
+            controller: _passwordController, 
+            decoration: const InputDecoration(labelText: "Пароль"), 
+            obscureText: true,
           ),
 
-          // password
-          TextField(
-            controller: _passwordController,
-          ),
+          const SizedBox(height: 12),
 
-          // button
           ElevatedButton(
             onPressed: login, 
-            child: const Text("Логин"))
+            child: const Text("Войти"),
+          ),
+
+          const SizedBox(height: 12),
+
+          GestureDetector(
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage())),
+            child: const Center(child: Text("Впервые здесь? Зарегистрируйтесь")),
+          ),
         ],
-      )
+      ),
     );
   }
 }

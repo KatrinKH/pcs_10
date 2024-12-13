@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:pcs_10/presentation/screens/home_page.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:pcs_10/presentation/screens/favorites_page.dart';
+import 'package:pcs_10/presentation/screens/login_page.dart';
 import 'package:pcs_10/presentation/screens/profile_page.dart';
+import 'package:pcs_10/presentation/screens/favorites_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:pcs_10/auth/auth_service.dart'; 
 
 void main() async {
-  // Supabase setup
   WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(
     url: "https://qdxyqjcvgidknhysppme.supabase.co",
     anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFkeHlxamN2Z2lka25oeXNwcG1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM5ODM4NDksImV4cCI6MjA0OTU1OTg0OX0.LNWgAfkJYlIqWDgE9psEDKO_aWuLEmaAyr8wywTI9Og",
   );
-
-  // run app
   runApp(const MyApp());
 }
 
@@ -44,19 +43,32 @@ class MainMenu extends StatefulWidget {
 class _MainMenuState extends State<MainMenu> {
   int _selectedIndex = 0;
 
-  // Метод для обновления выбранного элемента меню
-  void _onItemTapped(int index) {
+  final authService = AuthServices();
+  void _onItemTapped(int index) async {
     setState(() {
       _selectedIndex = index;
     });
+
+    if (index == 2) {
+      bool isLoggedIn = await authService.isLoggedIn();
+      if (isLoggedIn) {
+        setState(() {
+          _selectedIndex = 2;
+        });
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginPage()),
+        );
+      }
+    }
   }
 
-  // Определяем, какие экраны отображать для каждого пункта меню
   List<Widget> _widgetOptions(BuildContext context) {
     return [
-      const HomePage(), // Главная страница
-      const FavoritesPage(), // Страница избранного
-      const ProfilePage(), // Страница профиля
+      const HomePage(), 
+      const FavoritesPage(), 
+      const ProfilePage(), 
     ];
   }
 

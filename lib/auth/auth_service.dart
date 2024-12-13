@@ -3,6 +3,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class AuthServices {
   final SupabaseClient _supabase = Supabase.instance.client;
 
+  // Check auth
+  Future<bool> isLoggedIn() async {
+    final session = _supabase.auth.currentSession;
+    return session != null;
+  }
+
   // Sign in with email and password
   Future<AuthResponse> signInWithEmailPassword(
     String email, String password) async {
