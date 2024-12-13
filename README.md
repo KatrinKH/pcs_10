@@ -1,16 +1,17 @@
-# pcs_10
+# Программирование корпоративных систем (5 семестр)
 
-A new Flutter project.
+## Хомик Екатерина Андреевна ЭФБО-06-22
 
-## Getting Started
+Практическая работа 9
 
-This project is a starting point for a Flutter application.
+## Выполнение
 
-A few resources to get you started if this is your first Flutter project:
+### Экраны приложения
+![alt text](<1. Главный экран.png>) 
+![alt text](<2. Вход в аккаунт.png>) 
+![alt text](<3. Регистрация.png>) 
+![alt text](<4. Профиль.png>) 
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### База данных в Supabase
+![alt text](<5. БД игр.png>) 
+![alt text](<6. Пользователи.png>)
